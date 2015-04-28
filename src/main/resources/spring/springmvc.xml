@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+     	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		">
+
+	<!-- Configures the @Controller programming model -->
+	<!-- 表示使用cglib，而非JDK的动态代理，因为Controller没有实现接口，所以要配置这里 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+
+	<!-- 激活Spring注解方式：自动扫描，并注入bean -->
+	<context:component-scan
+		base-package="com.idove.annotation,com.idove.mybatis,com.idove.services.*,com.idove.web.*,com.idove.interceptor,com.idove.redis" />
+
+
+	<!-- 默认的注解映射的支持 -->
+	<mvc:annotation-driven />
+
+	<!-- 默认的静态文件访问的支持 -->
+	<mvc:default-servlet-handler />
+
+	<!-- 对静态资源文件的访问-->    
+    <mvc:resources mapping="/images/**" location="/images/"/>    
+    <mvc:resources mapping="/js/**" location="/js/"/>    
+    <mvc:resources mapping="/style/**" location="/style/"/>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.idove.interceptor.ExecuteTimeHandlerInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.idove.interceptor.SessionHandlerInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 统一处理没有被 catch的异常 -->
+	<bean id="exceptionResolver" class="com.idove.commons.AppExceptionResolver"></bean>
+
+	<!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/"></property>  
+        <property name="suffix" value=".jsp"></property>
+        <property name="contentType" value="text/html;charset=utf-8" />
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" /> 
+	</bean>
+	
+</beans>

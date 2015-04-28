@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.idove.services.users.dao.UserMapper">
+	<resultMap type="com.idove.services.users.domain.User" id="user">
+		<id column="userId" property="userId"/>
+	</resultMap>
+    <update id="update">
+		UPDATE user
+		<set>
+			<if test="userName != null">userName = #{userName},</if>
+			<if test="age != null">age = #{age},</if>
+		</set>
+		<where>
+			userId = #{userId}
+		</where>
+	</update>
+	<insert id="insert">
+		INSERT INTO user(userId,userName,age) VALUES (#{userId},#{userName},#{age})
+	</insert>
+	<select id="getAllList" resultMap="user">
+		SELECT * FROM user
+	</select>
+	<select id="getList" resultMap="user">
+		SELECT userId,userName FROM user
+	</select>
+	<select id="getUser" resultMap="user" parameterType="long">
+		SELECT * FROM user where userId = #{userId}
+	</select>
+</mapper>
