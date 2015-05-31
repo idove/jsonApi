@@ -45,7 +45,7 @@
 	<bean id="mSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
-		<property name="typeAliasesPackage" value="com.idove.services.users.domain" />
+		<property name="typeAliasesPackage" value="com.idove.services.*.domain" />
 		<property name="mapperLocations" value="classpath:mybatis/mappers/*/*.xml" />
 	</bean>
 	<bean id="mSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
@@ -55,7 +55,7 @@
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName" value="mSqlSessionFactory"></property>
 		<property name="sqlSessionTemplateBeanName" value="mSqlSessionTemplate"></property>
-		<property name="basePackage" value="com.idove.services.users.dao" />
+		<property name="basePackage" value="com.idove.services.*.dao" />
 		<property name="annotationClass"
 			value="com.idove.annotation.MyBatisRepository" />
 	</bean>
